@@ -1,0 +1,72 @@
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#0b1628;
+  color:#eee;
+  padding:1rem;
+}
+
+header{
+  text-align:center;
+  margin-bottom:1rem;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:16px;
+}
+
+.card{
+  background:#132036;
+  border-radius:12px;
+  overflow:hidden;
+  transform:perspective(600px) rotateY(0deg);
+  transition: transform .3s, box-shadow .3s;
+}
+
+.card:hover{
+  transform:perspective(600px) rotateY(8deg) translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+.card img{
+  width:100%;
+  height:160px;
+  object-fit:cover;
+}
+
+.card .info{
+  padding:12px;
+}
+
+.card .info h4{
+  margin:0 0 6px 0;
+}
+
+.card .info .credentials{
+  display:flex;
+  flex-direction:column;
+  background:#0f1a2c;
+  padding:6px;
+  border-radius:6px;
+}
+
+.card .info .credentials input{
+  width:100%;
+  background:#1b2a44;
+  border:none;
+  padding:6px;
+  color:#fff;
+  margin-bottom:4px;
+  border-radius:4px;
+}
+
+.card .info .credentials button{
+  background:#1b6ef3;
+  border:none;
+  padding:6px;
+  border-radius:4px;
+  color:#fff;
+  cursor:pointer;
+}
