@@ -1,162 +1,64 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Listings (Admin via Steam)</title>
-  <style>
-    /* condensed styling inspired by your previous design */
-    :root{ --bg:#071023; --card:#0f1724; --text:#e6f2ff; --muted:#99b0c8; --accent:#5cf2e6; }
-    *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#031025,#05162a);color:var(--text);font-family:Inter,system-ui,Arial;padding:18px}
-    .wrap{max-width:1100px;margin:0 auto}
-    header{display:flex;align-items:center;gap:12px}
-    .logo{font-weight:800; font-size:20px}
-    .btn{padding:8px 12px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);cursor:pointer}
-    .spacer{flex:1}
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
-    @media(max-width:1024px){.grid{grid-template-columns:repeat(2,1fr)}}
-    @media(max-width:640px){.grid{grid-template-columns:1fr}}
-    .card{background:var(--card);border-radius:14px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.5)}
-    .thumb{height:160px;background:#0b1330;display:flex;align-items:center;justify-content:center}
-    .thumb img{width:100%;height:100%;object-fit:cover}
-    .content{padding:12px}
-    .title{font-weight:700}
-    .meta{color:var(--muted);font-size:13px;margin-top:6px}
-    .row{display:flex;gap:8px;margin-top:12px;align-items:center}
-    input[type="text"], textarea{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);color:var(--text)}
-    .admin-panel{margin-top:14px;padding:12px;border-radius:12px;background:rgba(255,255,255,.02);display:none}
-    .empty{padding:40px;text-align:center;color:var(--muted);border-radius:12px;background:rgba(255,255,255,.01)}
-    footer{margin-top:28px;color:var(--muted);text-align:center}
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Firebase Demo</title>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="logo">🔒 Listings — Admin via Steam</div>
-      <div class="spacer"></div>
-      <div id="userBox"></div>
-      <button id="loginBtn" class="btn">Login with Steam</button>
-      <button id="logoutBtn" class="btn" style="display:none">Logout</button>
-    </header>
+  <h1>Firebase Connection Test</h1>
 
-    <section id="adminPanel" class="admin-panel" aria-hidden="true">
-      <h3>Add Listing (Admin only)</h3>
-      <div style="color:var(--muted);font-size:13px">Only the configured Steam account (site owner) can add listings. Images must be links; for uploads use third-party storage.</div>
-      <form id="addForm" style="margin-top:10px">
-        <div style="display:grid;gap:8px">
-          <input id="title" type="text" placeholder="Title (required)" required />
-          <input id="imageUrl" type="text" placeholder="Image URL (optional)" />
-          <textarea id="notes" rows="3" placeholder="Public notes (no passwords)"></textarea>
-          <div style="display:flex;gap:8px">
-            <button class="btn" type="submit">Add Listing</button>
-            <button id="refreshBtn" class="btn" type="button">Refresh</button>
-          </div>
-        </div>
-      </form>
-    </section>
+  <input id="itemText" placeholder="Enter item text"/>
+  <button id="addBtn">Add Item</button>
 
-    <main id="main">
-      <div id="grid" class="grid"></div>
-      <div id="empty" class="empty" style="display:none">No listings yet. If you are the site admin, login with Steam to add one.</div>
-    </main>
+  <ul id="itemsList"></ul>
 
-    <footer>© <span id="year"></span> — Listings</footer>
-  </div>
+  <script type="module">
+    // --- Import Firebase SDK modules directly from CDN ---
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs } 
+      from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
 
-<script>
-  const API = '';
-  const loginBtn = document.getElementById('loginBtn');
-  const logoutBtn = document.getElementById('logoutBtn');
-  const userBox = document.getElementById('userBox');
-  const adminPanel = document.getElementById('adminPanel');
-  const addForm = document.getElementById('addForm');
-  const grid = document.getElementById('grid');
-  const empty = document.getElementById('empty');
-  const refreshBtn = document.getElementById('refreshBtn');
+    // --- Your Firebase configuration ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyBwfv970BkFGEtr_T9sKMDsOREFuSdiAUQ",
+      authDomain: "fusionhub-57810.firebaseapp.com",
+      projectId: "fusionhub-57810",
+      storageBucket: "fusionhub-57810.appspot.com",
+      messagingSenderId: "550236493258",
+      appId: "1:550236493258:web:f9bd0a64b4f845a603eb33"
+    };
 
-  document.getElementById('year').textContent = new Date().getFullYear();
+    // --- Initialize Firebase & Firestore ---
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
 
-  async function fetchMe(){
-    const res = await fetch('/api/me');
-    return res.json();
-  }
+    const input = document.getElementById("itemText");
+    const addBtn = document.getElementById("addBtn");
+    const list = document.getElementById("itemsList");
 
-  async function fetchListings(){
-    const res = await fetch('/api/listings');
-    const arr = await res.json();
-    renderListings(arr);
-  }
-
-  function renderListings(items){
-    grid.innerHTML = '';
-    if(!items.length){ empty.style.display = 'block'; return; }
-    empty.style.display = 'none';
-    items.forEach(it => {
-      const el = document.createElement('div');
-      el.className = 'card';
-      el.innerHTML = `
-        <div class="thumb"><img src="${it.imageUrl || 'data:image/svg+xml;charset=UTF-8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22450%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%230a1626%22/></svg>'}" alt="${escapeHtml(it.title)}" /></div>
-        <div class="content">
-          <div class="title">${escapeHtml(it.title)}</div>
-          <div class="meta">Posted: ${new Date(it.createdAt).toLocaleString()}</div>
-          <div style="margin-top:10px">${escapeHtml(it.notes || '')}</div>
-        </div>
-      `;
-      grid.appendChild(el);
-    });
-  }
-
-  function escapeHtml(s=''){ return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;') }
-
-  // login button -> direct to backend Steam auth
-  loginBtn.addEventListener('click', ()=> location.href='/auth/steam');
-  logoutBtn.addEventListener('click', async ()=> {
-    await fetch('/auth/logout');
-    window.location.reload();
-  });
-
-  // Add form (admin only)
-  addForm.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    const title = document.getElementById('title').value.trim();
-    const imageUrl = document.getElementById('imageUrl').value.trim();
-    const notes = document.getElementById('notes').value.trim();
-    if(!title) { alert('Title required'); return; }
-    const res = await fetch('/api/listings', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ title, imageUrl, notes })
-    });
-    if(res.ok) { alert('Added'); addForm.reset(); fetchListings(); }
-    else {
-      const err = await res.json().catch(()=>({error:'Failed'}));
-      alert('Failed to add: ' + (err.error || JSON.stringify(err)));
+    // Add new document to "items" collection
+    async function addItem() {
+      const text = input.value.trim();
+      if (!text) return;
+      await addDoc(collection(db, "items"), { text, created: Date.now() });
+      input.value = "";
+      loadItems();
     }
-  });
 
-  refreshBtn.addEventListener('click', fetchListings);
-
-  // On load: check user & show/hide admin panel
-  (async function init(){
-    await fetchListings();
-    const me = await fetchMe();
-    if(me.user){
-      userBox.innerHTML = `<div style="display:flex;align-items:center;gap:8px"><img src="${me.user.photos ? me.user.photos[0] : ''}" width="28" style="border-radius:50%"/> <div style="font-size:13px">${me.user.displayName || ''}</div></div>`;
-      loginBtn.style.display = 'none';
-      logoutBtn.style.display = 'inline-flex';
-      // show admin panel only if backend recognizes you as the ADMIN_STEAM_ID
-      // server knows who is admin and will reject non-admin POSTs; but we can show UI after asking server:
-      // We'll attempt a harmless POST check by calling /api/me and trusting backend to gate writes. To keep UI correct, call a small endpoint
-      // Simpler: try to fetch admin-only route status by attempting to render admin panel if server's /api/me returns your id matching admin (server doesn't return admin flag),
-      // so backend will gate final action. We'll show the admin panel if user is logged in and let server enforce admin rights.
-      adminPanel.style.display = 'block';
-    } else {
-      userBox.innerHTML = '';
-      loginBtn.style.display = 'inline-flex';
-      logoutBtn.style.display = 'none';
-      adminPanel.style.display = 'none';
+    // Load and display all documents
+    async function loadItems() {
+      list.innerHTML = "";
+      const snapshot = await getDocs(collection(db, "items"));
+      snapshot.forEach(doc => {
+        const li = document.createElement("li");
+        li.textContent = doc.data().text;
+        list.appendChild(li);
+      });
     }
-  })();
-</script>
+
+    addBtn.addEventListener("click", addItem);
+    loadItems(); // initial load
+  </script>
 </body>
 </html>
