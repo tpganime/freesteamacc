@@ -1,64 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Firebase Demo</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Listings Website</title>
+<style>
+  body {margin:0; font-family:sans-serif; background: #0b1628; color:#eee; padding:1rem;}
+  header{display:flex; justify-content:space-between; align-items:center;}
+  header h1{font-size:1.5rem;}
+  button{padding:6px 12px;border:none;border-radius:6px;cursor:pointer;background:#1b6ef3;color:#fff;}
+  #adminPanel{margin-top:1rem; display:none; background:#132036; padding:1rem; border-radius:12px;}
+  #adminPanel input, #adminPanel textarea{width:100%; margin-bottom:8px; padding:8px; border-radius:6px; border:1px solid #333; background:#0f1a2c; color:#fff;}
+  .grid{display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); margin-top:1rem;}
+  .card{background:#132036;border-radius:12px; overflow:hidden; transform:perspective(600px) rotateY(0deg); transition:transform .3s;}
+  .card:hover{transform:perspective(600px) rotateY(6deg);}
+  .card img{width:100%; height:160px; object-fit:cover;}
+  .card .info{padding:12px;}
+</style>
 </head>
 <body>
-  <h1>Firebase Connection Test</h1>
 
-  <input id="itemText" placeholder="Enter item text"/>
+<header>
+  <h1>My Listings</h1>
+  <div>
+    <span id="userName"></span>
+    <button id="loginBtn">Login</button>
+    <button id="logoutBtn" style="display:none;">Logout</button>
+  </div>
+</header>
+
+<section id="adminPanel">
+  <h3>Add Item (Admin Only)</h3>
+  <input type="text" id="title" placeholder="Title" required>
+  <input type="text" id="imageUrl" placeholder="Image URL">
+  <textarea id="notes" placeholder="Notes"></textarea>
   <button id="addBtn">Add Item</button>
+</section>
 
-  <ul id="itemsList"></ul>
+<div id="grid" class="grid"></div>
 
-  <script type="module">
-    // --- Import Firebase SDK modules directly from CDN ---
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs } 
-      from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+<script type="module">
+  // --- Firebase SDK ---
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
 
-    // --- Your Firebase configuration ---
-    const firebaseConfig = {
-      apiKey: "AIzaSyBwfv970BkFGEtr_T9sKMDsOREFuSdiAUQ",
-      authDomain: "fusionhub-57810.firebaseapp.com",
-      projectId: "fusionhub-57810",
-      storageBucket: "fusionhub-57810.appspot.com",
-      messagingSenderId: "550236493258",
-      appId: "1:550236493258:web:f9bd0a64b4f845a603eb33"
-    };
+  // --- Firebase Config ---
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "fusionhub-57810.firebaseapp.com",
+    projectId: "fusionhub-57810",
+    storageBucket: "fusionhub-57810.appspot.com",
+    messagingSenderId: "550236493258",
+    appId: "1:550236493258:web:f9bd0a64b4f845a603eb33"
+  };
 
-    // --- Initialize Firebase & Firestore ---
-    const app = initializeApp(firebaseConfig);
-    const db  = getFirestore(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
 
-    const input = document.getElementById("itemText");
-    const addBtn = document.getElementById("addBtn");
-    const list = document.getElementById("itemsList");
+  const loginBtn = document.getElementById('loginBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const userName = document.getElementById('userName');
+  const adminPanel = document.getElementById('adminPanel');
+  const addBtn = document.getElementById('addBtn');
+  const grid = document.getElementById('grid');
 
-    // Add new document to "items" collection
-    async function addItem() {
-      const text = input.value.trim();
-      if (!text) return;
-      await addDoc(collection(db, "items"), { text, created: Date.now() });
-      input.value = "";
-      loadItems();
+  // --- Login ---
+  loginBtn.onclick = async () => {
+    const email = prompt("Admin Email:");
+    const pass = prompt("Password:");
+    try {
+      await signInWithEmailAndPassword(auth, email, pass);
+    } catch(err) { alert(err.message); }
+  };
+
+  logoutBtn.onclick = async () => { await signOut(auth); };
+
+  // --- Detect Auth State ---
+  onAuthStateChanged(auth, user => {
+    if(user){
+      userName.textContent = user.email;
+      loginBtn.style.display='none';
+      logoutBtn.style.display='inline';
+      adminPanel.style.display='block';
+    } else {
+      userName.textContent='';
+      loginBtn.style.display='inline';
+      logoutBtn.style.display='none';
+      adminPanel.style.display='none';
     }
+  });
 
-    // Load and display all documents
-    async function loadItems() {
-      list.innerHTML = "";
-      const snapshot = await getDocs(collection(db, "items"));
-      snapshot.forEach(doc => {
-        const li = document.createElement("li");
-        li.textContent = doc.data().text;
-        list.appendChild(li);
-      });
-    }
+  // --- Add Item ---
+  addBtn.onclick = async () => {
+    const title = document.getElementById('title').value.trim();
+    const imageUrl = document.getElementById('imageUrl').value.trim();
+    const notes = document.getElementById('notes').value.trim();
+    if(!title){ alert('Title required'); return; }
+    await addDoc(collection(db, 'items'), {title, imageUrl, notes, created:Date.now()});
+    document.getElementById('title').value='';
+    document.getElementById('imageUrl').value='';
+    document.getElementById('notes').value='';
+    loadItems();
+  };
 
-    addBtn.addEventListener("click", addItem);
-    loadItems(); // initial load
-  </script>
+  // --- Load Items ---
+  async function loadItems(){
+    const snap = await getDocs(collection(db, 'items'));
+    grid.innerHTML='';
+    snap.forEach(doc => {
+      const d = doc.data();
+      const div = document.createElement('div');
+      div.className='card';
+      div.innerHTML = `
+        <img src="${d.imageUrl || 'https://via.placeholder.com/400x160'}">
+        <div class="info">
+          <h4>${d.title}</h4>
+          <p>${d.notes || ''}</p>
+        </div>`;
+      grid.appendChild(div);
+    });
+  }
+
+  loadItems();
+</script>
+
 </body>
 </html>
