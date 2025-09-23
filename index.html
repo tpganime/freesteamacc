@@ -5,127 +5,78 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Free Steam Accounts</title>
 <style>
-/* ---- BASIC STYLES ---- */
 body{
   margin:0;
-  font-family: Arial, sans-serif;
+  font-family:Arial, sans-serif;
   background:#0b1628;
-  color:#eee;
+  color:#fff;
   padding:1rem;
 }
-header{
-  text-align:center;
-  margin-bottom:1.5rem;
-}
-h1{
-  margin-bottom:0.5rem;
-}
-
-/* ---- SEARCH BAR ---- */
+header{text-align:center;margin-bottom:1.5rem;}
+h1{margin-bottom:0.5rem;}
 .search-box{
-  display:flex;
-  justify-content:center;
-  margin-bottom:1.5rem;
+  display:flex;justify-content:center;margin-bottom:1.5rem;
 }
 .search-box input{
-  padding:10px 15px;
-  width:250px;
-  max-width:80%;
-  border:none;
-  border-radius:30px 0 0 30px;
-  outline:none;
-  font-size:16px;
-  background:#1b2a44;
-  color:#fff;
-  transition:all .3s ease;
+  padding:10px 15px;width:250px;max-width:80%;
+  border:none;border-radius:30px 0 0 30px;
+  background:#1b2a44;color:#fff;outline:none;
+  transition:box-shadow .3s;
 }
-.search-box input:focus{
-  box-shadow:0 0 20px #1b6ef3;
-}
+.search-box input:focus{box-shadow:0 0 20px #1b6ef3;}
 .search-box button{
-  background:#1b6ef3;
-  color:#fff;
-  border:none;
-  padding:10px 20px;
-  border-radius:0 30px 30px 0;
-  cursor:pointer;
-  font-weight:bold;
-  font-size:16px;
-  transition:transform .3s, box-shadow .3s;
+  background:#1b6ef3;color:#fff;border:none;
+  padding:10px 20px;border-radius:0 30px 30px 0;
+  cursor:pointer;font-weight:bold;
+  transition:transform .3s,box-shadow .3s;
 }
 .search-box button:hover{
   transform:scale(1.1) rotateY(10deg);
   box-shadow:0 0 20px #1b6ef3;
 }
-
-/* ---- GRID ---- */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
   gap:20px;
 }
-
-/* ---- CARD ---- */
 .card{
   background:#132036;
   border-radius:15px;
   overflow:hidden;
   transform:perspective(700px) rotateY(0deg);
-  transition:transform .4s ease, box-shadow .4s ease;
+  transition:transform .4s, box-shadow .4s;
 }
 .card:hover{
   transform:perspective(700px) rotateY(8deg) translateY(-8px);
-  box-shadow:0 20px 30px rgba(0,0,0,0.6);
+  box-shadow:0 20px 30px rgba(0,0,0,.6);
 }
-.card img{
-  width:100%;
-  height:180px;
-  object-fit:cover;
-}
-.info{
-  padding:12px;
-}
-.info h4{
-  text-align:center;
-  margin:0 0 10px 0;
-}
+.card img{width:100%;height:180px;object-fit:cover;}
+.info{padding:12px;}
+.info h4{text-align:center;margin:0 0 10px;}
 .credentials{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  background:#0f1a2c;
-  padding:8px;
-  border-radius:8px;
+  display:flex;flex-direction:column;
+  gap:6px;background:#0f1a2c;
+  padding:8px;border-radius:8px;
 }
 .credentials input{
-  background:#1b2a44;
-  border:none;
-  padding:6px;
-  color:#fff;
-  border-radius:4px;
+  background:#1b2a44;border:none;
+  padding:6px;color:#fff;border-radius:4px;
   text-align:center;
 }
 .credentials button{
-  background:#1b6ef3;
-  border:none;
-  padding:6px;
-  border-radius:4px;
-  color:#fff;
-  cursor:pointer;
-  font-weight:bold;
+  background:#1b6ef3;border:none;
+  padding:6px;border-radius:4px;
+  color:#fff;cursor:pointer;font-weight:bold;
   transition:transform .3s, box-shadow .3s;
 }
 .credentials button:hover{
   transform:scale(1.05) rotateY(5deg);
   box-shadow:0 0 10px #1b6ef3;
 }
-@media(max-width:500px){
-  .card img{height:140px;}
-}
+@media(max-width:500px){.card img{height:140px;}}
 </style>
 </head>
 <body>
-
 <header>
   <h1>Free Steam Accounts</h1>
   <div class="search-box">
@@ -143,23 +94,23 @@ const items = [
   {title:"GTA V", image:"gtav.png", id:"skyfall64963", password:"Xbox_360!"},
   {title:"Black Myth Wukong", image:"bmw.jpg", id:"tazrs41035", password:"ibwe69388M"},
   {title:"FORZA HORIZON 4", image:"forza.jpg", id:"bejwc", password:"aA102020"},
-  {title:"FORZA HORIZON 5", image:"fh5.avif", id:"wbtq1089352", password:"steamok778899"}
+  {title:"FORZA HORIZON 5", image:"fh5.avif", id:"wbtq1089352", password:"steamok778899"},
   {title:"Resident Evil 4", image:"rd4.jpg", id:"7854YIxK", password:"6399dnEVfh13"},
   {title:"Hollow Knight: Silksong", image:"hks.jpg", id:"HYsh23s8", password:"vb501Iak"},
-  {title:"Chained Together", image:"cth.avif", id:"AeWgB381887", password:"LbNgT871165"},
+  {title:"Chained Together", image:"cth.avif", id:"AeWgB381887", password:"LbNgT871165"}
 ];
 
 const grid = document.getElementById("grid");
 
 function renderCards(filter=""){
-  grid.innerHTML = "";
+  grid.innerHTML="";
   const lower = filter.toLowerCase();
   items
-    .filter(item => item.title.toLowerCase().includes(lower))
-    .forEach(item => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
+    .filter(i=>i.title.toLowerCase().includes(lower))
+    .forEach(item=>{
+      const c=document.createElement("div");
+      c.className="card";
+      c.innerHTML=`
         <img src="${item.image}" alt="${item.title}">
         <div class="info">
           <h4>${item.title}</h4>
@@ -169,34 +120,23 @@ function renderCards(filter=""){
             <input type="text" value="${item.password}" readonly>
             <button class="copy-pass">Copy Password</button>
           </div>
-        </div>
-      `;
-      const btnId = card.querySelector(".copy-id");
-      btnId.onclick = () => {
+        </div>`;
+      c.querySelector(".copy-id").onclick=()=>{
         navigator.clipboard.writeText(item.id);
-        btnId.textContent = "Copied!";
-        setTimeout(()=> btnId.textContent = "Copy ID", 1200);
+        c.querySelector(".copy-id").textContent="Copied!";
+        setTimeout(()=>c.querySelector(".copy-id").textContent="Copy ID",1200);
       };
-      const btnPass = card.querySelector(".copy-pass");
-      btnPass.onclick = () => {
+      c.querySelector(".copy-pass").onclick=()=>{
         navigator.clipboard.writeText(item.password);
-        btnPass.textContent = "Copied!";
-        setTimeout(()=> btnPass.textContent = "Copy Password", 1200);
+        c.querySelector(".copy-pass").textContent="Copied!";
+        setTimeout(()=>c.querySelector(".copy-pass").textContent="Copy Password",1200);
       };
-      grid.appendChild(card);
+      grid.appendChild(c);
     });
 }
-
-// initial render
 renderCards();
-
-// search functionality
-document.getElementById("searchBtn").addEventListener("click", () => {
-  renderCards(document.getElementById("searchInput").value);
-});
-document.getElementById("searchInput").addEventListener("input", e=>{
-  renderCards(e.target.value);
-});
+document.getElementById("searchBtn").onclick=()=>renderCards(document.getElementById("searchInput").value);
+document.getElementById("searchInput").oninput=e=>renderCards(e.target.value);
 </script>
 </body>
 </html>
