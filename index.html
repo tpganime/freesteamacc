@@ -2,200 +2,267 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Free Steam Accounts</title>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#0b1628;color:#fff;padding:1rem;}
-header{text-align:center;margin-bottom:1.5rem;}
-h1{margin-bottom:0.5rem;}
-.search-box{display:flex;justify-content:center;margin-bottom:1.5rem;}
-.search-box input{padding:10px 15px;width:250px;max-width:80%;border:none;border-radius:30px 0 0 30px;background:#1b2a44;color:#fff;outline:none;}
-.search-box input:focus{box-shadow:0 0 20px #1b6ef3;}
-.search-box button{background:#1b6ef3;color:#fff;border:none;padding:10px 20px;border-radius:0 30px 30px 0;cursor:pointer;font-weight:bold;transition:transform .3s,box-shadow .3s;}
-.search-box button:hover{transform:scale(1.1);box-shadow:0 0 20px #1b6ef3;}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
-.card{background:#132036;border-radius:15px;overflow:hidden;transition:transform .3s,box-shadow .3s;cursor:pointer;}
-.card:hover{transform:scale(1.05);box-shadow:0 15px 25px rgba(0,0,0,.6);}
-.card img{width:100%;height:180px;object-fit:cover;}
-.info{padding:12px;}
-.info h4{text-align:center;margin:0 0 10px;}
-.credentials{display:flex;flex-direction:column;gap:6px;background:#0f1a2c;padding:8px;border-radius:8px;}
-.credentials input{background:#1b2a44;border:none;padding:6px;color:#fff;border-radius:4px;text-align:center;}
-.credentials button{background:#1b6ef3;border:none;padding:6px;border-radius:4px;color:#fff;cursor:pointer;font-weight:bold;transition:transform .3s,box-shadow .3s;}
-.credentials button:hover{transform:scale(1.05);box-shadow:0 0 10px #1b6ef3;}
-#overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:999;}
-.overlay-card{background:#132036;border-radius:15px;max-width:90%;width:320px;box-shadow:0 20px 40px rgba(0,0,0,.7);animation:pop .3s ease;position:relative;}
-@keyframes pop{from{transform:scale(0.7);opacity:0;}to{transform:scale(1);opacity:1;}}
-.overlay-card img{width:100%;border-radius:15px 15px 0 0;}
-.overlay-card .info{padding:12px;}
-.overlay-card .close{position:absolute;top:15px;right:20px;color:#fff;font-size:28px;cursor:pointer;}
-.details-btn{display:block;margin:8px auto 0;background:#1b6ef3;border:none;padding:6px 12px;border-radius:6px;color:#fff;font-weight:bold;cursor:pointer;transition:transform .3s,box-shadow .3s;}
-.details-btn:hover{transform:scale(1.05);box-shadow:0 0 10px #1b6ef3;}
-#detailText{margin-top:10px;background:#0f1a2c;padding:10px;border-radius:8px;display:none;white-space:pre-line;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:#fff;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:20px;
+  }
+  h1{
+    font-size:2.5rem;
+    margin-bottom:20px;
+    text-shadow:0 0 10px #0ff;
+  }
+  .search-bar{
+    margin-bottom:20px;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+  }
+  .search-bar input{
+    padding:10px;
+    font-size:1rem;
+    border-radius:8px;
+    border:none;
+    outline:none;
+    width:250px;
+  }
+  .search-bar button{
+    padding:10px 20px;
+    font-size:1rem;
+    border:none;
+    border-radius:8px;
+    background:#0ff;
+    color:#000;
+    cursor:pointer;
+    transition:transform .3s,box-shadow .3s;
+  }
+  .search-bar button:hover{
+    transform:scale(1.1) rotate(2deg);
+    box-shadow:0 0 20px #0ff;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+    width:100%;
+    max-width:1200px;
+  }
+  .card{
+    background:rgba(255,255,255,0.1);
+    border-radius:15px;
+    padding:15px;
+    text-align:center;
+    backdrop-filter:blur(5px);
+    cursor:pointer;
+    transition:transform .4s ease, box-shadow .4s ease;
+  }
+  .card img{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+    border-radius:10px;
+  }
+  .card:hover{
+    transform:translateY(-10px) scale(1.03);
+    box-shadow:0 10px 30px rgba(0,255,255,0.4);
+  }
+  .card h2{margin-top:10px;font-size:1.2rem;}
+
+  /* Popup */
+  .overlay{
+    position:fixed;
+    top:0;left:0;width:100%;height:100%;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(5px);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+  }
+  .popup{
+    background:#111;
+    border-radius:20px;
+    padding:30px;
+    width:90%;
+    max-width:400px;
+    text-align:center;
+    box-shadow:0 0 25px #0ff;
+    animation:fadeIn .4s ease;
+  }
+  @keyframes fadeIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
+  .popup img{width:100%;border-radius:10px;}
+  .popup h2{margin:15px 0;font-size:1.5rem;}
+  .popup p{margin:10px 0;}
+  .copy-btn{
+    margin:5px;
+    padding:8px 15px;
+    border:none;
+    border-radius:8px;
+    background:#0ff;
+    color:#000;
+    cursor:pointer;
+    transition:transform .3s;
+  }
+  .copy-btn:hover{transform:scale(1.1);}
+  .detail-btn{
+    margin-top:10px;
+    padding:8px 20px;
+    border:none;
+    border-radius:8px;
+    background:#ff0;
+    color:#000;
+    cursor:pointer;
+    transition:transform .3s;
+  }
+  .detail-btn:hover{transform:scale(1.1);}
+  .close-btn{
+    margin-top:15px;
+    background:red;
+    color:white;
+    padding:8px 20px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+  }
+  .contact{
+    margin-top:30px;
+    padding:10px 25px;
+    border:none;
+    border-radius:8px;
+    background:#0ff;
+    color:#000;
+    font-size:1.1rem;
+    cursor:pointer;
+    transition:transform .3s,box-shadow .3s;
+  }
+  .contact:hover{
+    transform:scale(1.1);
+    box-shadow:0 0 15px #0ff;
+  }
 </style>
 </head>
 <body>
-<header>
   <h1>Free Steam Accounts</h1>
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Search game…">
-    <button id="searchBtn">Search</button>
-  </div>
-</header>
 
-<div class="grid" id="grid"></div>
-
-<div id="overlay">
-  <div class="overlay-card">
-    <div class="close" id="closeOverlay">&times;</div>
-    <div id="overlayContent"></div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search game...">
+    <button onclick="searchGame()">Search</button>
   </div>
-</div>
+
+  <div class="grid" id="gameGrid"></div>
+
+  <!-- Contact Us Button -->
+  <button class="contact"
+    onclick="window.location='mailto:yourgmail@gmail.com'">
+    Contact Us
+  </button>
+  <!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+       👆 Replace yourgmail@gmail.com with your Gmail
+  -->
+
+  <!-- Popup -->
+  <div class="overlay" id="popupOverlay">
+    <div class="popup" id="popupContent"></div>
+  </div>
 
 <script>
-const items = [
- {title:"Spider-Man 2", image:"spider.jpg", id:"sortalcreel1582", password:"GhosTSpiderman0",
-  details:`Recommended:
-Requires a 64-bit processor and operating system
-OS: Windows 10/11 (version 1909 or higher)
-Processor: Intel Core i5-8400 or AMD Ryzen 5 3600
-Memory: 16 GB RAM
-Graphics: NVIDIA GeForce RTX 3060 or AMD Radeon RX 5700
-DOWNLOAD SIZE:108.17GB.`},
- {title:"Cyberpunk 2077", image:"Cyberpunk.jpg", id:"not available", password:"not available",
-  details:`id and password will available soon`},
- {title:"GTA V", image:"gtav.png", id:"skyfall64963", password:"Xbox_360!",
-  details:`Recommended:
-Requires a 64-bit processor and operating system
-OS: Windows 11
-Processor: Intel® Core™ i5-9600K | AMD Ryzen™ 5 3600
-Memory: 16 GB RAM
-Graphics: NVIDIA GeForce® RTX 3060 (8GB VRAM) | AMD Radeon™ RX 6600XT (8GB VRAM)
-DOWNLOAD SIZE:116.4GB.`},
- {title:"Black Myth Wukong", image:"bmw.jpg", id:"tazrs41035", password:"ibwe69388M",
-  details:`Recommended:
-Requires a 64-bit processor and operating system
-OS: Windows 10 64-bit
-Processor: Intel Core i7-9700 / AMD Ryzen 5 5500
-Memory: 16 GB RAM
-Graphics: NVIDIA GeForce RTX 2060 / AMD Radeon RX 5700 XT / INTEL Arc A750
-DirectX: Version 12
-DOWNLOAD SIZE:130GB`},
- {title:"FORZA HORIZON 4", image:"forza.jpg", id:"bejwc", password:"aA102020",
-  details:`Windows 10 (version 15063.0 or higher),
-Intel i3-4170 or Intel i5 750 processor,
-8 GB of RAM,
-NVIDIA 650Ti or AMD R7 250X graphics card,
-DirectX 12.
-DOWNLOAD SIZE:82GB`},
- {title:"FORZA HORIZON 5", image:"fh5.avif", id:"wbtq1089352", password:"steamok778899",
-  details:`Recommended:
-Requires a 64-bit processor and operating system
-OS: Windows 10 version 18362.0 or higher
-Processor: Intel i5-8400 or AMD Ryzen 5 1500X
-Memory: 16 GB RAM
-Graphics: NVidia GTX 1070, AMD RX 590, OR Intel Arc A750
-DirectX: Version 12
-DOWNLOAD SIZE:138GB`},
- {title:"Resident Evil 4", image:"rd4.jpg", id:"7854YIxK", password:"6399dnEVfh13",
-  details:`Recommended:
-Requires a 64-bit processor and operating system
-OS: Windows 10 (64 bit)/Windows 11 (64 bit)
-Processor: AMD Ryzen 5 3600 / Intel Core i7 8700
-Memory: 16 GB RAM
-Graphics: AMD Radeon RX 5700 / NVIDIA GeForce GTX 1070
-DirectX: Version 12
-DOWNLOAD SIZE:53.0GB`},
- {title:"Hollow Knight: Silksong", image:"hks.jpg", id:"HYsh23s8", password:"vb501Iak",
-  details:`Recommended:
-Requires a 64-bit processor and operating system
-OS: Windows 10 version 21H1 (build 19043) or newer
-Processor: Intel Core i5-3470
-Memory: 8 GB RAM
-Graphics: GeForce GTX 1050 (2GB), Radeon R9 380 (2GB)
-DirectX: Version 10
-DOWNLOAD SIZE:7.6GB`},
- {title:"Chained Together", image:"cth.avif", id:"AeWgB381887", password:"LbNgT871165",
-  details:`Recommended:
-Requires a 64-bit processor and operating system
-OS: Windows 8/10/11 (64-Bit)
-Processor: Intel Core i5 10400 3.1 GHz or AMD Ryzen 5 2600x 3.1 GHz
-Memory: 16 GB RAM
-Graphics: NVIDIA GeForce RTX 3060 or equivalent
-DOWNLOAD SIZE:7.28GB.`}
+/* ===========================
+   GAME LIST
+   Set active:false to disable
+   =========================== */
+const games=[
+  {title:"Spider-Man 2", image:"spider.jpg",
+   id:"sortalcreel1582", password:"GhosTSpiderman0",
+   details:"Requires Win10/11, i5-8400, 16GB RAM, RTX3060. DOWNLOAD SIZE:108GB",
+   active:true}, // <- set to false to disable
+  {title:"Cyberpunk 2077", image:"Cyberpunk.jpg",
+   id:"aegis084", password:"ezskydream",
+   details:"Win10, i7-12700, 16GB RAM, RTX2060. DOWNLOAD SIZE:85GB",
+   active:true},
+  {title:"GTA V", image:"gtav.png",
+   id:"skyfall64963", password:"Xbox_360!",
+   details:"Open-world action-adventure. Min i5, 8GB RAM, GTX1050.",
+   active:true},
+  {title:"Black Myth Wukong", image:"bmw.jpg",
+   id:"tazrs41035", password:"ibwe69388M",
+   details:"Action RPG with Chinese mythology. Needs RTX 2060 or higher.",
+   active:true},
+  {title:"FORZA HORIZON 4", image:"forza.jpg",
+   id:"bejwc", password:"aA102020",
+   details:"Ultimate racing fun. Needs GTX 970, 8GB RAM.",
+   active:true},
+  {title:"Resident Evil 4", image:"rd4.jpg",
+   id:"7854YIxK", password:"6399dnEVfh13",
+   details:"Survival horror classic remake.",
+   active:true},
+  {title:"Hollow Knight: Silksong", image:"hks.jpg",
+   id:"HYsh23s8", password:"vb501Iak",
+   details:"Metroidvania action-platformer.",
+   active:true},
+  {title:"Chained Together", image:"cth.avif",
+   id:"AeWgB381887", password:"LbNgT871165",
+   details:"Co-op climbing challenge with friends.",
+   active:true}
 ];
 
-const grid=document.getElementById("grid");
-const overlay=document.getElementById("overlay");
-const overlayContent=document.getElementById("overlayContent");
-const closeOverlay=document.getElementById("closeOverlay");
-
-function makeCard(item){
-  const c=document.createElement("div");
-  c.className="card";
-  c.innerHTML=`
-    <img src="${item.image}" alt="${item.title}">
-    <div class="info">
-      <h4>${item.title}</h4>
-      <div class="credentials">
-        <input type="text" value="${item.id}" readonly>
-        <button class="copy-id">Copy ID</button>
-        <input type="text" value="${item.password}" readonly>
-        <button class="copy-pass">Copy Password</button>
-      </div>
-    </div>`;
-  c.querySelector(".copy-id").onclick=e=>{
-    e.stopPropagation();
-    navigator.clipboard.writeText(item.id);
-    e.target.textContent="Copied!";
-    setTimeout(()=>e.target.textContent="Copy ID",1200);
-  };
-  c.querySelector(".copy-pass").onclick=e=>{
-    e.stopPropagation();
-    navigator.clipboard.writeText(item.password);
-    e.target.textContent="Copied!";
-    setTimeout(()=>e.target.textContent="Copy Password",1200);
-  };
-  c.onclick=()=>openOverlay(item);
-  return c;
-}
-
-function openOverlay(item){
-  overlayContent.innerHTML=`
-    <img src="${item.image}" alt="${item.title}">
-    <div class="info">
-      <h4>${item.title}</h4>
-      <button class="details-btn" id="detailsBtn">Details</button>
-      <div class="credentials">
-        <input type="text" value="${item.id}" readonly>
-        <button class="copy-id">Copy ID</button>
-        <input type="text" value="${item.password}" readonly>
-        <button class="copy-pass">Copy Password</button>
-      </div>
-      <div id="detailText">${item.details}</div>
-    </div>`;
-  overlay.style.display="flex";
-  const idBtn=overlayContent.querySelector(".copy-id");
-  idBtn.onclick=()=>{navigator.clipboard.writeText(item.id);idBtn.textContent="Copied!";setTimeout(()=>idBtn.textContent="Copy ID",1200);}
-  const passBtn=overlayContent.querySelector(".copy-pass");
-  passBtn.onclick=()=>{navigator.clipboard.writeText(item.password);passBtn.textContent="Copied!";setTimeout(()=>passBtn.textContent="Copy Password",1200);}
-  const detailBtn=overlayContent.querySelector("#detailsBtn");
-  const detailText=overlayContent.querySelector("#detailText");
-  detailBtn.onclick=()=>{detailText.style.display=detailText.style.display==="block"?"none":"block";};
-}
-
-function renderCards(filter=""){
+const grid=document.getElementById('gameGrid');
+function renderGames(filter=""){
   grid.innerHTML="";
-  const lower=filter.toLowerCase();
-  items.filter(i=>i.title.toLowerCase().includes(lower)).forEach(i=>grid.appendChild(makeCard(i)));
+  games
+   .filter(g=>g.title.toLowerCase().includes(filter.toLowerCase()))
+   .forEach((game,i)=>{
+     const card=document.createElement('div');
+     card.className='card';
+     card.innerHTML=`
+        <img src="${game.image}" alt="${game.title}">
+        <h2>${game.title}</h2>
+     `;
+     card.onclick=()=>openPopup(game);
+     grid.appendChild(card);
+   });
 }
-renderCards();
+renderGames();
 
-document.getElementById("searchBtn").onclick=()=>renderCards(document.getElementById("searchInput").value);
-document.getElementById("searchInput").oninput=e=>renderCards(e.target.value);
+function searchGame(){
+  const val=document.getElementById('searchInput').value;
+  renderGames(val);
+}
 
-closeOverlay.onclick=()=>overlay.style.display="none";
-overlay.onclick=e=>{if(e.target===overlay) overlay.style.display="none";};
+function openPopup(game){
+  const overlay=document.getElementById('popupOverlay');
+  const content=document.getElementById('popupContent');
+  content.innerHTML=`
+    <img src="${game.image}" alt="${game.title}">
+    <h2>${game.title}</h2>
+    ${game.active ? `
+      <p><b>ID:</b> ${game.id} 
+         <button class="copy-btn" onclick="copyText('${game.id}')">Copy</button></p>
+      <p><b>Password:</b> ${game.password} 
+         <button class="copy-btn" onclick="copyText('${game.password}')">Copy</button></p>
+      <button class="detail-btn" onclick="alert('${game.details}')">Details</button>
+    ` : `<p style="color:red;font-weight:bold;">This account is currently inactive.</p>`}
+    <button class="close-btn" onclick="closePopup()">Close</button>
+  `;
+  overlay.style.display='flex';
+}
+
+function closePopup(){
+  document.getElementById('popupOverlay').style.display='none';
+}
+
+function copyText(txt){
+  navigator.clipboard.writeText(txt)
+   .then(()=>alert('Copied: '+txt));
+}
 </script>
 </body>
 </html>
