@@ -75,8 +75,6 @@
     z-index:999;
     padding:10px;
   }
-
-  /* Popup */
   .popup{
     position:relative;
     background:#111;
@@ -88,11 +86,8 @@
     overflow-y:auto;
     text-align:center;
     box-shadow:0 0 25px #0ff;
-    white-space:pre-line;
     transform-origin:center;
   }
-
-  /* Animations */
   @keyframes fadeInAnim {
     from{transform:scale(0.8) rotateY(30deg);opacity:0}
     to{transform:scale(1) rotateY(0);opacity:1}
@@ -103,8 +98,6 @@
   }
   .fadeIn{animation:fadeInAnim 0.4s forwards;}
   .fadeOut{animation:fadeOutAnim 0.4s forwards;}
-
-  /* Sticky close button */
   .close-x{
     position:sticky;
     top:0;
@@ -119,8 +112,6 @@
     margin-left:auto;
     display:block;
   }
-
-  /* 📱 On small screens → full screen popup */
   @media (max-width: 768px){
     .popup{
       width:100%;
@@ -130,21 +121,36 @@
       border-radius:0;
     }
   }
-
   .popup img{width:100%;border-radius:10px;}
   .popup h2{margin:15px 0;font-size:1.5rem;}
   .popup p{margin:10px 0;}
+
+  /* Buttons */
   .copy-btn{
-    margin:5px;
-    padding:8px 15px;
+    margin-left:10px;
+    padding:6px 12px;
     border:none;
     border-radius:8px;
     background:#0ff;
     color:#000;
     cursor:pointer;
-    transition:transform .3s;
+    transition:transform 0.3s;
   }
-  .copy-btn:hover{transform:scale(1.1);}
+  .copy-btn:active{
+    transform:scale(1.2) rotateX(20deg);
+  }
+  .detail-btn{
+    margin-top:15px;
+    padding:10px 18px;
+    border:none;
+    border-radius:8px;
+    background:#ff0;
+    color:#000;
+    font-weight:bold;
+    cursor:pointer;
+    transition:transform 0.3s;
+  }
+  .detail-btn:hover{transform:scale(1.1);}
   .contact{
     margin-top:30px;
     padding:10px 25px;
@@ -164,20 +170,15 @@
 </head>
 <body>
   <h1>Free Steam Accounts</h1>
-
   <div class="search-bar">
     <input type="text" id="searchInput" placeholder="Search game...">
   </div>
-
   <div class="grid" id="gameGrid"></div>
-
-  <!-- Contact Us Button -->
   <button class="contact"
     onclick="window.location.href='mailto:fusionhub122@gmail.com?subject=Support&body=Hello,'">
     Contact Us
   </button>
 
-  <!-- Popup -->
   <div class="overlay" id="popupOverlay">
     <div class="popup" id="popupContent"></div>
   </div>
@@ -286,10 +287,11 @@ function openPopup(game){
     <h2>${game.title}</h2>
     ${game.active ? `
       <p><b>ID:</b> ${game.id} 
-         <button class="copy-btn" onclick="copyText('${game.id}')">Copy</button></p>
+         <button class="copy-btn" onclick="copyText('${game.id}', this)">Copy</button></p>
       <p><b>Password:</b> ${game.password} 
-         <button class="copy-btn" onclick="copyText('${game.password}')">Copy</button></p>
-      <pre style="text-align:left;white-space:pre-line;margin-top:15px;">${game.details}</pre>
+         <button class="copy-btn" onclick="copyText('${game.password}', this)">Copy</button></p>
+      <button class="detail-btn" onclick="showDetails(\`${game.details}\`)">Show Details</button>
+      <div id="detailsArea"></div>
     ` : `<p style="color:red;font-weight:bold;">This account is currently inactive.</p>`}
   `;
   content.classList.remove('fadeOut');
@@ -302,14 +304,19 @@ function closePopup(){
   const content=document.getElementById('popupContent');
   content.classList.remove('fadeIn');
   content.classList.add('fadeOut');
-  setTimeout(()=>{
-    overlay.style.display='none';
-  },400); // wait for animation
+  setTimeout(()=>{ overlay.style.display='none'; },400);
 }
 
-function copyText(txt){
-  navigator.clipboard.writeText(txt)
-   .then(()=>alert('Copied: '+txt));
+function copyText(txt, btn){
+  navigator.clipboard.writeText(txt).then(()=>{
+    btn.style.transform="scale(1.3) rotateY(180deg)";
+    setTimeout(()=>{ btn.style.transform="scale(1) rotateY(0)"; },400);
+  });
+}
+
+function showDetails(det){
+  document.getElementById("detailsArea").innerHTML=
+    `<pre style="text-align:left;white-space:pre-line;margin-top:15px;">${det}</pre>`;
 }
 </script>
 </body>
