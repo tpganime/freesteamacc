@@ -63,7 +63,7 @@
   }
   .card h2{margin-top:10px;font-size:1.2rem;}
 
-  /* Popup */
+  /* Overlay */
   .overlay{
     position:fixed;
     top:0;left:0;width:100%;height:100%;
@@ -73,14 +73,19 @@
     justify-content:center;
     align-items:center;
     z-index:999;
+    padding:10px;
   }
+
+  /* Popup */
   .popup{
     position:relative;
     background:#111;
     border-radius:20px;
-    padding:30px;
-    width:90%;
+    padding:20px;
+    width:100%;
     max-width:500px;
+    max-height:90vh;
+    overflow-y:auto;
     text-align:center;
     box-shadow:0 0 25px #0ff;
     white-space:pre-line;
@@ -96,11 +101,34 @@
     from{transform:scale(1) rotateY(0);opacity:1}
     to{transform:scale(0.7) rotateY(90deg);opacity:0}
   }
-  .fadeIn{
-    animation:fadeInAnim 0.4s forwards;
+  .fadeIn{animation:fadeInAnim 0.4s forwards;}
+  .fadeOut{animation:fadeOutAnim 0.4s forwards;}
+
+  /* Sticky close button */
+  .close-x{
+    position:sticky;
+    top:0;
+    right:0;
+    text-align:right;
+    font-size:1.8rem;
+    background:none;
+    border:none;
+    color:#fff;
+    cursor:pointer;
+    z-index:1000;
+    margin-left:auto;
+    display:block;
   }
-  .fadeOut{
-    animation:fadeOutAnim 0.4s forwards;
+
+  /* 📱 On small screens → full screen popup */
+  @media (max-width: 768px){
+    .popup{
+      width:100%;
+      height:100%;
+      max-width:none;
+      max-height:none;
+      border-radius:0;
+    }
   }
 
   .popup img{width:100%;border-radius:10px;}
@@ -117,16 +145,6 @@
     transition:transform .3s;
   }
   .copy-btn:hover{transform:scale(1.1);}
-  .close-x{
-    position:absolute;
-    top:10px;
-    right:15px;
-    font-size:1.5rem;
-    background:none;
-    border:none;
-    color:#fff;
-    cursor:pointer;
-  }
   .contact{
     margin-top:30px;
     padding:10px 25px;
