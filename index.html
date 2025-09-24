@@ -93,10 +93,11 @@
     border-radius:20px;
     padding:30px;
     width:90%;
-    max-width:400px;
+    max-width:500px;
     text-align:center;
     box-shadow:0 0 25px #0ff;
     animation:fadeIn .4s ease;
+    white-space:pre-line;
   }
   @keyframes fadeIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
   .popup img{width:100%;border-radius:10px;}
@@ -113,17 +114,6 @@
     transition:transform .3s;
   }
   .copy-btn:hover{transform:scale(1.1);}
-  .detail-btn{
-    margin-top:10px;
-    padding:8px 20px;
-    border:none;
-    border-radius:8px;
-    background:#ff0;
-    color:#000;
-    cursor:pointer;
-    transition:transform .3s;
-  }
-  .detail-btn:hover{transform:scale(1.1);}
   .close-btn{
     margin-top:15px;
     background:red;
@@ -162,12 +152,9 @@
 
   <!-- Contact Us Button -->
   <button class="contact"
-    onclick="window.location='fusionhub122@gmail.com'">
+    onclick="window.location.href='mailto:fusionhub122@gmail.com?subject=Support&body=Hello,'">
     Contact Us
   </button>
-  <!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-       👆 Replace yourgmail@gmail.com with your Gmail
-  -->
 
   <!-- Popup -->
   <div class="overlay" id="popupOverlay">
@@ -176,42 +163,78 @@
 
 <script>
 /* ===========================
-   GAME LIST
-   Set active:false to disable
+   GAME LIST (with full details)
    =========================== */
 const games=[
-  {title:"Spider-Man 2", image:"spider.jpg",
-   id:"sortalcreel1582", password:"GhosTSpiderman0",
-   details:"Requires Win10/11, i5-8400, 16GB RAM, RTX3060. DOWNLOAD SIZE:108GB",
-   active:true}, // <- set to false to disable
-  {title:"Cyberpunk 2077", image:"Cyberpunk.jpg",
-   id:"aegis084", password:"ezskydream",
-   details:"Win10, i7-12700, 16GB RAM, RTX2060. DOWNLOAD SIZE:85GB",
-   active:false},
-  {title:"GTA V", image:"gtav.png",
-   id:"skyfall64963", password:"Xbox_360!",
-   details:"Open-world action-adventure. Min i5, 8GB RAM, GTX1050.",
-   active:true},
-  {title:"Black Myth Wukong", image:"bmw.jpg",
-   id:"tazrs41035", password:"ibwe69388M",
-   details:"Action RPG with Chinese mythology. Needs RTX 2060 or higher.",
-   active:true},
-  {title:"FORZA HORIZON 4", image:"forza.jpg",
-   id:"bejwc", password:"aA102020",
-   details:"Ultimate racing fun. Needs GTX 970, 8GB RAM.",
-   active:true},
-  {title:"Resident Evil 4", image:"rd4.jpg",
-   id:"7854YIxK", password:"6399dnEVfh13",
-   details:"Survival horror classic remake.",
-   active:true},
-  {title:"Hollow Knight: Silksong", image:"hks.jpg",
-   id:"HYsh23s8", password:"vb501Iak",
-   details:"Metroidvania action-platformer.",
-   active:true},
-  {title:"Chained Together", image:"cth.avif",
-   id:"AeWgB381887", password:"LbNgT871165",
-   details:"Co-op climbing challenge with friends.",
-   active:true}
+  {title:"Spider-Man 2", image:"spider.jpg", id:"sortalcreel1582", password:"GhosTSpiderman0",
+   details:`Recommended:
+Requires a 64-bit processor and operating system
+OS: Windows 10/11 (version 1909 or higher)
+Processor: Intel Core i5-8400 or AMD Ryzen 5 3600
+Memory: 16 GB RAM
+Graphics: NVIDIA GeForce RTX 3060 or AMD Radeon RX 5700
+DOWNLOAD SIZE:108.17GB.`, active:true},
+  {title:"Cyberpunk 2077", image:"Cyberpunk.jpg", id:"not available", password:"not available",
+   details:`id and password will available soon`, active:false},
+  {title:"GTA V", image:"gtav.png", id:"skyfall64963", password:"Xbox_360!",
+   details:`Recommended:
+Requires a 64-bit processor and operating system
+OS: Windows 11
+Processor: Intel® Core™ i5-9600K | AMD Ryzen™ 5 3600
+Memory: 16 GB RAM
+Graphics: NVIDIA GeForce® RTX 3060 (8GB VRAM) | AMD Radeon™ RX 6600XT (8GB VRAM)
+DOWNLOAD SIZE:116.4GB.`, active:true},
+  {title:"Black Myth Wukong", image:"bmw.jpg", id:"tazrs41035", password:"ibwe69388M",
+   details:`Recommended:
+Requires a 64-bit processor and operating system
+OS: Windows 10 64-bit
+Processor: Intel Core i7-9700 / AMD Ryzen 5 5500
+Memory: 16 GB RAM
+Graphics: NVIDIA GeForce RTX 2060 / AMD Radeon RX 5700 XT / INTEL Arc A750
+DirectX: Version 12
+DOWNLOAD SIZE:130GB`, active:true},
+  {title:"FORZA HORIZON 4", image:"forza.jpg", id:"bejwc", password:"aA102020",
+   details:`Windows 10 (version 15063.0 or higher),
+Intel i3-4170 or Intel i5 750 processor,
+8 GB of RAM,
+NVIDIA 650Ti or AMD R7 250X graphics card,
+DirectX 12.
+DOWNLOAD SIZE:82GB`, active:true},
+  {title:"FORZA HORIZON 5", image:"fh5.avif", id:"wbtq1089352", password:"steamok778899",
+   details:`Recommended:
+Requires a 64-bit processor and operating system
+OS: Windows 10 version 18362.0 or higher
+Processor: Intel i5-8400 or AMD Ryzen 5 1500X
+Memory: 16 GB RAM
+Graphics: NVidia GTX 1070, AMD RX 590, OR Intel Arc A750
+DirectX: Version 12
+DOWNLOAD SIZE:138GB`, active:true},
+  {title:"Resident Evil 4", image:"rd4.jpg", id:"7854YIxK", password:"6399dnEVfh13",
+   details:`Recommended:
+Requires a 64-bit processor and operating system
+OS: Windows 10 (64 bit)/Windows 11 (64 bit)
+Processor: AMD Ryzen 5 3600 / Intel Core i7 8700
+Memory: 16 GB RAM
+Graphics: AMD Radeon RX 5700 / NVIDIA GeForce GTX 1070
+DirectX: Version 12
+DOWNLOAD SIZE:53.0GB`, active:true},
+  {title:"Hollow Knight: Silksong", image:"hks.jpg", id:"HYsh23s8", password:"vb501Iak",
+   details:`Recommended:
+Requires a 64-bit processor and operating system
+OS: Windows 10 version 21H1 (build 19043) or newer
+Processor: Intel Core i5-3470
+Memory: 8 GB RAM
+Graphics: GeForce GTX 1050 (2GB), Radeon R9 380 (2GB)
+DirectX: Version 10
+DOWNLOAD SIZE:7.6GB`, active:true},
+  {title:"Chained Together", image:"cth.avif", id:"AeWgB381887", password:"LbNgT871165",
+   details:`Recommended:
+Requires a 64-bit processor and operating system
+OS: Windows 8/10/11 (64-Bit)
+Processor: Intel Core i5 10400 3.1 GHz or AMD Ryzen 5 2600x 3.1 GHz
+Memory: 16 GB RAM
+Graphics: NVIDIA GeForce RTX 3060 or equivalent
+DOWNLOAD SIZE:7.28GB.`, active:true}
 ];
 
 const grid=document.getElementById('gameGrid');
@@ -248,7 +271,7 @@ function openPopup(game){
          <button class="copy-btn" onclick="copyText('${game.id}')">Copy</button></p>
       <p><b>Password:</b> ${game.password} 
          <button class="copy-btn" onclick="copyText('${game.password}')">Copy</button></p>
-      <button class="detail-btn" onclick="alert('${game.details}')">Details</button>
+      <pre style="text-align:left;white-space:pre-line;margin-top:15px;">${game.details}</pre>
     ` : `<p style="color:red;font-weight:bold;">This account is currently inactive.</p>`}
     <button class="close-btn" onclick="closePopup()">Close</button>
   `;
@@ -266,3 +289,4 @@ function copyText(txt){
 </script>
 </body>
 </html>
+
