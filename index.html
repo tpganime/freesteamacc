@@ -35,20 +35,6 @@
     outline:none;
     width:250px;
   }
-  .search-bar button{
-    padding:10px 20px;
-    font-size:1rem;
-    border:none;
-    border-radius:8px;
-    background:#0ff;
-    color:#000;
-    cursor:pointer;
-    transition:transform .3s,box-shadow .3s;
-  }
-  .search-bar button:hover{
-    transform:scale(1.1) rotate(2deg);
-    box-shadow:0 0 20px #0ff;
-  }
   .grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
@@ -89,6 +75,7 @@
     z-index:999;
   }
   .popup{
+    position:relative;
     background:#111;
     border-radius:20px;
     padding:30px;
@@ -96,10 +83,26 @@
     max-width:500px;
     text-align:center;
     box-shadow:0 0 25px #0ff;
-    animation:fadeIn .4s ease;
     white-space:pre-line;
+    transform-origin:center;
   }
-  @keyframes fadeIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
+
+  /* Animations */
+  @keyframes fadeInAnim {
+    from{transform:scale(0.8) rotateY(30deg);opacity:0}
+    to{transform:scale(1) rotateY(0);opacity:1}
+  }
+  @keyframes fadeOutAnim {
+    from{transform:scale(1) rotateY(0);opacity:1}
+    to{transform:scale(0.7) rotateY(90deg);opacity:0}
+  }
+  .fadeIn{
+    animation:fadeInAnim 0.4s forwards;
+  }
+  .fadeOut{
+    animation:fadeOutAnim 0.4s forwards;
+  }
+
   .popup img{width:100%;border-radius:10px;}
   .popup h2{margin:15px 0;font-size:1.5rem;}
   .popup p{margin:10px 0;}
@@ -114,13 +117,14 @@
     transition:transform .3s;
   }
   .copy-btn:hover{transform:scale(1.1);}
-  .close-btn{
-    margin-top:15px;
-    background:red;
-    color:white;
-    padding:8px 20px;
+  .close-x{
+    position:absolute;
+    top:10px;
+    right:15px;
+    font-size:1.5rem;
+    background:none;
     border:none;
-    border-radius:8px;
+    color:#fff;
     cursor:pointer;
   }
   .contact{
@@ -145,7 +149,6 @@
 
   <div class="search-bar">
     <input type="text" id="searchInput" placeholder="Search game...">
-    <button onclick="searchGame()">Search</button>
   </div>
 
   <div class="grid" id="gameGrid"></div>
@@ -162,9 +165,6 @@
   </div>
 
 <script>
-/* ===========================
-   GAME LIST (with full details)
-   =========================== */
 const games=[
   {title:"Spider-Man 2", image:"spider.jpg", id:"sortalcreel1582", password:"GhosTSpiderman0",
    details:`Recommended:
@@ -242,7 +242,7 @@ function renderGames(filter=""){
   grid.innerHTML="";
   games
    .filter(g=>g.title.toLowerCase().includes(filter.toLowerCase()))
-   .forEach((game,i)=>{
+   .forEach((game)=>{
      const card=document.createElement('div');
      card.className='card';
      card.innerHTML=`
@@ -255,15 +255,15 @@ function renderGames(filter=""){
 }
 renderGames();
 
-function searchGame(){
-  const val=document.getElementById('searchInput').value;
-  renderGames(val);
-}
+document.getElementById('searchInput').addEventListener('input', e=>{
+  renderGames(e.target.value);
+});
 
 function openPopup(game){
   const overlay=document.getElementById('popupOverlay');
   const content=document.getElementById('popupContent');
   content.innerHTML=`
+    <button class="close-x" onclick="closePopup()">✖</button>
     <img src="${game.image}" alt="${game.title}">
     <h2>${game.title}</h2>
     ${game.active ? `
@@ -273,13 +273,20 @@ function openPopup(game){
          <button class="copy-btn" onclick="copyText('${game.password}')">Copy</button></p>
       <pre style="text-align:left;white-space:pre-line;margin-top:15px;">${game.details}</pre>
     ` : `<p style="color:red;font-weight:bold;">This account is currently inactive.</p>`}
-    <button class="close-btn" onclick="closePopup()">Close</button>
   `;
+  content.classList.remove('fadeOut');
+  content.classList.add('fadeIn');
   overlay.style.display='flex';
 }
 
 function closePopup(){
-  document.getElementById('popupOverlay').style.display='none';
+  const overlay=document.getElementById('popupOverlay');
+  const content=document.getElementById('popupContent');
+  content.classList.remove('fadeIn');
+  content.classList.add('fadeOut');
+  setTimeout(()=>{
+    overlay.style.display='none';
+  },400); // wait for animation
 }
 
 function copyText(txt){
@@ -289,4 +296,3 @@ function copyText(txt){
 </script>
 </body>
 </html>
-
