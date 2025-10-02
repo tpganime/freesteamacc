@@ -231,6 +231,31 @@ body{
   font-size:1.1rem;
 }
 .contact:hover{transform:scale(1.1);box-shadow:0 0 18px #0ff;}
+   /* ===========================================================
+   RESPONSIVE ADJUSTMENTS
+   =========================================================== */
+
+/* Small phones */
+@media (max-width: 480px) {
+  .intro-text { font-size: 1.5rem; }
+  .search-bar input { width: 100%; font-size: 0.9rem; }
+  .card img { height: 140px; }
+  .popup { max-width: 95%; padding: 15px; }
+  .popup h2 { font-size: 1.2rem; }
+  .detail-btn, .steam-btn, .contact { width: 100%; font-size: 0.9rem; }
+  .button { width: 160px; height: 50px; }
+  .text { font-size: 0.9rem; }
+}
+
+/* Tablets */
+@media (min-width: 481px) and (max-width: 768px) {
+  .intro-text { font-size: 2rem; }
+  .search-bar input { width: 80%; }
+  .card img { height: 160px; }
+  .popup { max-width: 90%; }
+}
+
+/* Larger screens (default stays as-is) */
 </style>
 <style>
 *,
