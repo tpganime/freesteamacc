@@ -231,71 +231,6 @@ body{
   font-size:1.1rem;
 }
 .contact:hover{transform:scale(1.1);box-shadow:0 0 18px #0ff;}
-   /* ===========================================================
-   RESPONSIVE ADJUSTMENTS
-   =========================================================== */
-
-/* Small phones */
-@media (max-width: 480px) {
-  .intro-text { font-size: 1.5rem; }
-  .search-bar input { width: 100%; font-size: 0.9rem; }
-  .card img { height: 140px; }
-  .popup { max-width: 95%; padding: 15px; }
-  .popup h2 { font-size: 1.2rem; }
-  .detail-btn, .steam-btn, .contact { width: 100%; font-size: 0.9rem; }
-  .button { width: 160px; height: 50px; }
-  .text { font-size: 0.9rem; }
-}
-
-/* Tablets */
-@media (min-width: 481px) and (max-width: 768px) {
-  .intro-text { font-size: 2rem; }
-  .search-bar input { width: 80%; }
-  .card img { height: 160px; }
-  .popup { max-width: 90%; }
-}
-
-/* Larger screens (default stays as-is) */
-</style>
-   <style>
-      /* ===========================================================
-   MOBILE RESPONSIVE FIXES
-   =========================================================== */
-@media (max-width: 768px) {
-  body { padding: 10px; }
-
-  /* Intro animation button */
-  .button {
-    width: 80% !important;
-    max-width: 250px;
-    height: 50px !important;
-  }
-  .text { font-size: 0.9rem; left: 50%; transform: translate(-50%, -50%); }
-
-  /* Search bar */
-  .search-bar { flex-direction: column; gap: 8px; width: 100%; }
-  .search-bar input { width: 100% !important; font-size: 0.9rem; }
-
-  /* Game cards */
-  .card img { height: auto !important; max-height: 150px; }
-  .card h2 { font-size: 1rem; }
-
-  /* Popup */
-  .popup {
-    width: 95% !important;
-    max-width: 95% !important;
-    padding: 15px;
-  }
-  .popup h2 { font-size: 1.2rem; }
-  .popup img { max-height: 200px; object-fit: contain; }
-
-  /* Buttons inside popup */
-  .detail-btn, .steam-btn, .contact {
-    width: 100%;
-    font-size: 0.9rem;
-    padding: 10px;
-  }
-}
 </style>
 <style>
 *,
@@ -1428,6 +1363,55 @@ body {
   opacity: 0;
   pointer-events: none;
 }
+
+/* ===========================================================
+   RESPONSIVE FIXES FOR MOBILE & TABLET
+   =========================================================== */
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr !important; /* 1 card per row */
+  }
+  .button {
+    width: 80% !important;
+    max-width: 250px;
+    height: 50px !important;
+  }
+  .search-bar { flex-direction: column; gap: 8px; width: 100%; }
+  .search-bar input { width: 100% !important; font-size: 0.9rem; }
+  .card img { height: auto !important; max-height: 150px; }
+  .popup { width: 95% !important; max-width: 95% !important; padding: 15px; }
+  .detail-btn, .steam-btn, .contact {
+    width: 100%;
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr) !important; /* 2 cards per row */
+  }
+  .button { width: 200px; height: 55px; }
+  .popup { width: 90% !important; max-width: 90% !important; }
+}
+
+
+/* ===========================================================
+   REMOVE TILT EFFECT (Keep Hover Scale & Shadow)
+   =========================================================== */
+@media (hover:hover) {
+  .card.desktop:hover{
+    transform: translateY(-18px) scale(1.12) !important;
+    box-shadow:0 25px 60px rgba(0,255,255,0.7) !important;
+  }
+}
+@media (hover:none) {
+  .card:active{
+    transform: translateY(-8px) scale(1.04) !important;
+    box-shadow:0 10px 25px rgba(0,255,255,0.5) !important;
+  }
+}
+
 </style>
 
 </head>
